@@ -4,8 +4,8 @@
 
 A responsive e-commerce homepage for **Spraylite**, the Mumbai cooking-spray brand. Built with Next.js 16, React 19, TypeScript and Tailwind CSS v4 for the Visionary Bizz frontend assessment.
 
-- **Live site:** _add the Vercel URL here_
-- **Repository:** _add the GitHub URL here_
+- **Live site:** [spraylite-e-commerce.vercel.app](https://spraylite-e-commerce.vercel.app)
+- **Repository:** [github.com/ipoonawala9/spraylite-e-commerce](https://github.com/ipoonawala9/spraylite-e-commerce)
 
 | Desktop                                                                                | Mobile                                           |
 | -------------------------------------------------------------------------------------- | ------------------------------------------------ |
