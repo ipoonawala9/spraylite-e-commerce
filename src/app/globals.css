@@ -1,0 +1,206 @@
+@import "tailwindcss";
+
+/* Spraylite: Mist & Metal. See docs/design/theme.md */
+@theme {
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-aluminium: #e6e9ec;
+  --color-aluminium-deep: #d3d9df;
+  --color-tin: #fbfcfd;
+  --color-ink: #10325c;
+  --color-ink-soft: #3f5877;
+  --color-brand: #1d5fb4;
+  --color-brand-deep: #164c91;
+  --color-lite: #f5c518;
+  --color-lite-soft: #fcefbf;
+  --color-coral: #fd866c;
+  --color-heart: #e4563a;
+  --color-alert: #b3261e;
+
+  --radius-panel: 1.75rem;
+  --radius-field: 0.875rem;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --shadow-sheet: 0 30px 80px -20px rgb(16 50 92 / 0.45);
+}
+
+@theme inline {
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-vietnam), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background: var(--color-aluminium);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Yellow inside ink: the brand highlight, with an outer ring that passes 3:1 */
+  :focus-visible {
+    outline: 3px solid var(--color-ink);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px var(--color-lite);
+  }
+
+  ::selection {
+    background: var(--color-lite);
+    color: var(--color-ink);
+  }
+
+  @media (prefers-contrast: more) {
+    :root {
+      --color-ink-soft: var(--color-ink);
+      --color-aluminium-deep: #7f8c99;
+    }
+  }
+}
+
+/* Type scale: tracking tightens and leading closes as size grows */
+@utility type-hero {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8.2vw, 6.75rem);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+}
+
+@utility type-h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.2vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.022em;
+}
+
+@utility type-h3 {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+@utility type-small {
+  font-size: 0.875rem;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+}
+
+@utility page-x {
+  width: 100%;
+  max-width: 82rem;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+}
+
+/* Feedback on press, not on release */
+@utility press {
+  transition-property:
+    transform, background-color, color, border-color, opacity;
+  transition-duration: 150ms;
+  transition-timing-function: var(--ease-out-soft);
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+    transition-duration: 100ms;
+  }
+}
+
+/* Translucent chrome: content scrolls under it */
+@utility glass {
+  background: rgb(230 233 236 / 0.72);
+  -webkit-backdrop-filter: blur(18px) saturate(170%);
+  backdrop-filter: blur(18px) saturate(170%);
+
+  @media (prefers-reduced-transparency: reduce) {
+    background: var(--color-aluminium);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  @media (prefers-contrast: more) {
+    background: var(--color-aluminium);
+  }
+}
+
+/* A horizontal rail that lines up with the page container but bleeds to the viewport edge */
+@utility rail-pad {
+  --rail-pad: max(
+    clamp(1rem, 4vw, 2.5rem),
+    calc((100% - 82rem) / 2 + clamp(1rem, 4vw, 2.5rem))
+  );
+  padding-inline: var(--rail-pad);
+  scroll-padding-inline: var(--rail-pad);
+}
+
+@utility footer-link {
+  color: color-mix(in oklab, var(--color-tin) 85%, transparent);
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  transition:
+    color 150ms,
+    text-decoration-color 150ms;
+
+  &:hover {
+    color: var(--color-tin);
+    text-decoration-color: currentColor;
+  }
+}
+
+@layer components {
+  /* Hero: copy, tin, picker. The tin spans both rows on wide screens. */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "copy" "stage" "picker";
+  }
+
+  @media (min-width: 64rem) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      grid-template-rows: auto auto;
+      grid-template-areas:
+        "copy stage"
+        "picker stage";
+    }
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
